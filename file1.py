@@ -4,6 +4,16 @@ import numpy as np
 
 st.title("Kružnice s body")
 
+# Rozbalovací okénko s informacemi
+with st.expander("ℹ️ Více informací"):
+    st.write("""
+    Tento nástroj generuje body na kružnici.
+    - Zadejte souřadnice středu X a Y
+    - Zadejte poloměr a počet bodů
+    - Vyberte barvu a jednotku
+    Graf se automaticky vykreslí níže.
+    """)
+
 # --------- Vstupy od uživatele ----------
 souřadnice = st.text_input("Zadej souřadnice středu X Y (oddělené mezerou)", "0 0")
 try:
