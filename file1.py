@@ -57,6 +57,8 @@ if st.button("Generovat PDF"):
     ax_text.axis('off')
     text = f"""
 Úloha: Kružnice s body
+"""
+    ax_text.text(0.5, 0.9, "Úloha: Kružnice s body", fontsize=18, ha='center', va='center')
 Jméno: {jmeno}
 Kontakt: {kontakt}
 
