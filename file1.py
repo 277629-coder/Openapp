@@ -1,9 +1,7 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
-from fpdf import FPDF
-import tempfile
-import os
+import io
 
 st.title("Kružnice s body")
 
@@ -47,39 +45,44 @@ ax.set_aspect("equal")
 ax.grid(True)
 st.pyplot(fig)
 
-# --------- Generování PDF ----------
+# --------- Generování PDF přímo přes matplotlib ----------
 if st.button("Generovat PDF"):
-    # Uložíme graf do dočasného PNG souboru
-    tmp_file = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
-    plt.savefig(tmp_file.name)
-    tmp_file.close()  # uzavření souboru, aby FPDF mohlo načíst
+    pdf_bytes = io.BytesIO()
 
-    pdf = FPDF()
-    pdf.add_page()
-    pdf.set_font("Arial", size=12)
-    pdf.cell(0, 10, "Úloha: Kružnice s body", ln=True)
-    pdf.cell(0, 10, f"Jméno: {jmeno}", ln=True)
-    pdf.cell(0, 10, f"Kontakt: {kontakt}", ln=True)
-    pdf.cell(0, 10, f"Střed: ({stred_x}, {stred_y})", ln=True)
-    pdf.cell(0, 10, f"Poloměr: {polomer}", ln=True)
-    pdf.cell(0, 10, f"Počet bodů: {pocet_bodu}", ln=True)
-    pdf.cell(0, 10, f"Barva bodů: {barva}", ln=True)
-    pdf.cell(0, 10, f"Jednotka: {jednotka}", ln=True)
-    pdf.ln(10)
+    # Vytvoříme novou figuru pro PDF, text nahoře, graf dole
+    fig_pdf, (ax_text, ax_graph) = plt.subplots(2, 1, figsize=(8, 10), gridspec_kw={'height_ratios':[1,2]})
     
-    # Přidáme graf jako obrázek z dočasného souboru
-    pdf.image(tmp_file.name, x=10, w=180)
+    # Textové informace
+    ax_text.axis('off')
+    text = f"""
+Úloha: Kružnice s body
+Jméno: {jmeno}
+Kontakt: {kontakt}
+Střed: ({stred_x}, {stred_y})
+Poloměr: {polomer}
+Počet bodů: {pocet_bodu}
+Barva bodů: {barva}
+Jednotka: {jednotka}
+"""
+    ax_text.text(0, 0.5, text, fontsize=12, verticalalignment='center', wrap=True)
+    
+    # Graf
+    ax_graph.scatter(x_body, y_body, color=barva, label="Body")
+    ax_graph.scatter(stred_x, stred_y, color="black", marker="x", label="Střed")
+    ax_graph.set_xlabel(f"x [{jednotka}]")
+    ax_graph.set_ylabel(f"y [{jednotka}]")
+    ax_graph.set_aspect("equal")
+    ax_graph.grid(True)
+    
+    fig_pdf.tight_layout()
+    fig_pdf.savefig(pdf_bytes, format='pdf')
+    plt.close(fig_pdf)
+    pdf_bytes.seek(0)
 
-    # Uložíme PDF do paměti pro Streamlit
-    pdf_bytes = pdf.output(dest='S').encode('latin1')
-
-    # Tlačítko pro stažení PDF
+    # Stáhnutí PDF
     st.download_button(
         label="Stáhnout PDF",
         data=pdf_bytes,
         file_name="kruzice.pdf",
         mime="application/pdf"
     )
-
-    # Odstraníme dočasný soubor s grafem
-    os.remove(tmp_file.name)
