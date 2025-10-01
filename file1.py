@@ -42,6 +42,5 @@ ax.set_xlabel(f"x [{jednotka}]")
 ax.set_ylabel(f"y [{jednotka}]")
 ax.set_aspect("equal", adjustable="box")
 ax.grid(True)
-ax.legend()
 
 st.pyplot(fig)
