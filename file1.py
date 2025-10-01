@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import io
 
-st.title("Kružnice s body")
+st.title("Vykružnicuj ma")
 
 # Rozbalovací okénko s informacemi
 with st.expander("ℹ️ Více informací"):
