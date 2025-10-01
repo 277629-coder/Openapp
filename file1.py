@@ -12,6 +12,7 @@ with st.expander("ℹ️ Více informací"):
     - Zadejte poloměr a počet bodů
     - Vyberte barvu a jednotku
     Graf se automaticky vykreslí níže.
+    -Jsem student VUT v Brně a za pomocí aplikace github a streamlit, jsem vytvořil tuto jednoduchou aplikaci
     """)
 
 # --------- Vstupy od uživatele ----------
@@ -36,9 +37,6 @@ y_body = stred_y + polomer * np.sin(uhly)
 fig, ax = plt.subplots(figsize=(6,6))
 ax.scatter(x_body, y_body, color=barva, label="Body na kružnici")
 ax.scatter(stred_x, stred_y, color="black", marker="x", label="Střed")
-
-circle = plt.Circle((stred_x, stred_y), polomer, fill=False, linestyle="--", color="gray")
-ax.add_artist(circle)
 
 ax.set_xlabel(f"x [{jednotka}]")
 ax.set_ylabel(f"y [{jednotka}]")
