@@ -59,9 +59,11 @@ if st.button("Generovat PDF"):
 Úloha: Kružnice s body
 Jméno: {jmeno}
 Kontakt: {kontakt}
+
 Střed: ({stred_x}, {stred_y})
 Poloměr: {polomer}
 Počet bodů: {pocet_bodu}
+
 Barva bodů: {barva}
 Jednotka: {jednotka}
 """
