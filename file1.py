@@ -13,6 +13,7 @@ with st.expander("ℹ️ Více informací"):
     - Zadejte poloměr a počet bodů
     - Vyberte barvu a jednotku
     Graf se automaticky vykreslí níže.
+    - Jsem student VUT a za pomocí aplikace github a streamlit jsem vytvořil jednoduchou aplikaci
     """)
 
 # --------- Vstupy od uživatele ----------
