@@ -51,11 +51,11 @@ st.pyplot(fig)
 
 # --------- Generování PDF ----------
 if st.button("Generovat PDF"):
-    # Uložíme graf do bufferu
-    buf = io.BytesIO()
-    fig.savefig(buf, format="png")
-    buf.seek(0)
-    
+    # Uložíme graf do dočasného souboru
+    with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmpfile:
+        fig.savefig(tmpfile.name, format="png")
+        graf_path = tmpfile.name
+
     pdf = FPDF()
     pdf.add_page()
     pdf.set_font("Arial", size=12)
@@ -69,8 +69,10 @@ if st.button("Generovat PDF"):
     pdf.cell(0, 10, f"Jednotka: {jednotka}", ln=True)
     pdf.ln(10)
 
-    # Přidáme graf jako obrázek
-    pdf.image(buf, x=10, y=None, w=180)  # šířka obrázku 180 mm
+    # Přidáme graf jako obrázek z dočasného souboru
+    pdf.image(graf_path, x=10, y=None, w=180)
+
+    # Uložíme PDF do BytesIO pro Streamlit
     pdf_bytes = io.BytesIO()
     pdf.output(pdf_bytes)
     pdf_bytes.seek(0)
