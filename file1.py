@@ -49,10 +49,10 @@ st.pyplot(fig)
 
 # --------- Generování PDF ----------
 if st.button("Generovat PDF"):
-    # Uložíme graf do dočasného souboru
+    # Uložíme graf do dočasného PNG souboru
     tmp_file = tempfile.NamedTemporaryFile(suffix=".png", delete=False)
-    fig.savefig(tmp_file.name)
-    tmp_file.close()  # uzavření souboru, aby ho FPDF mohlo načíst
+    plt.savefig(tmp_file.name)
+    tmp_file.close()  # uzavření souboru, aby FPDF mohlo načíst
 
     pdf = FPDF()
     pdf.add_page()
@@ -69,8 +69,11 @@ if st.button("Generovat PDF"):
     
     # Přidáme graf jako obrázek z dočasného souboru
     pdf.image(tmp_file.name, x=10, w=180)
+
+    # Uložíme PDF do paměti pro Streamlit
     pdf_bytes = pdf.output(dest='S').encode('latin1')
 
+    # Tlačítko pro stažení PDF
     st.download_button(
         label="Stáhnout PDF",
         data=pdf_bytes,
@@ -78,5 +81,5 @@ if st.button("Generovat PDF"):
         mime="application/pdf"
     )
 
-    # Odstraníme dočasný soubor
+    # Odstraníme dočasný soubor s grafem
     os.remove(tmp_file.name)
