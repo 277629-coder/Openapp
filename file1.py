@@ -49,6 +49,8 @@ ax.grid(True)
 
 st.pyplot(fig)
 
+import tempfile
+
 # --------- Generování PDF ----------
 if st.button("Generovat PDF"):
     # Uložíme graf do dočasného souboru
